@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="AOJ 0004 - 0009 を埋めた | 人権を得たいゴミ">
+<meta property="og:url" content="http://upamune.github.io/blog/2015/07/05/aoj_ume0/">
+<meta property="og:description" content="0004 Simultaneous Equation 連立方程式の解は1意に定まると書いてあるので、楽ちん。小数点以下第４位を四捨五入 に注意する。あと、負のゼロが出る場合があるのでその時は 0 に直さなければならない。 コード #include &lt;bits/stdc&#43;&#43;.h&gt; using namespace std; int main(void) { double x1, x2, y1, y2, X, Y; while (cin &gt;&gt; x1 &gt;&gt; y1 &gt;&gt; X &gt;&gt; x2 &gt;&gt; y2 &gt;&gt; Y) { double det = 1.0 / (x1 * y2 - x2 * y1); double ansX = det * (y2 * X - y1 * Y); double ansY = det * (x1 * Y">
+
+<meta property="og:image" content="http://upamune.github.io/images/aoj.png">
+
+
+<meta property="og:site_name" content="人権を得たいゴミ">
+<meta name="twitter:card" content="summary">
+
+<title>
+    
+    AOJ 0004 - 0009 を埋めた | 人権を得たいゴミ
+    
+</title>
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Serif:400,400italic,700|PT+Sans:400">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/solarized_dark.min.css">
+<link rel="stylesheet" href="http://upamune.github.io/css/base.css">
+<link rel="stylesheet" href="http://upamune.github.io/css/styles.css">
+<link rel="stylesheet" href="http://upamune.github.io/css/custom.css">
+
+
+<link rel="shortcut icon" href="http://upamune.github.io/assets/favicon.ico">
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://upamune.github.io/index.xml">
+
+
+
+<div class="wrap">
+    <div class="masthead">
+        <div class="container">
+            <h3 class="masthead-title">
+                <a href="http://upamune.github.io" title="Home">人権を得たいゴミ</a>
+            </h3>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </div>
+    </div>
+
+    <div class="container content">
+
+
+<article class="post post-single">
+    <span class="post-date">Sun, Jul 5, 2015</span>
+    <h1 class="post-title">AOJ 0004 - 0009 を埋めた</h1>
+
+    <div class="eyecatch">
+        
+        <img src="http://upamune.github.io/images/aoj.png" alt="AOJ 0004 - 0009 を埋めた">
+        
+    </div>
+    
+
+    <div class="post-content">
+        
+
+<h1 id="0004:e4e007fb7c0784763ddbe00555507573">0004</h1>
+
+<p><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0004">Simultaneous Equation</a></p>
+
+<p>連立方程式の解は1意に定まると書いてあるので、楽ちん。<code>小数点以下第４位を四捨五入</code> に注意する。あと、負のゼロが出る場合があるのでその時は <code>0</code> に直さなければならない。</p>
+
+<h2 id="コード:e4e007fb7c0784763ddbe00555507573">コード</h2>
+
+<pre><code class="language-c++">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main(void) {
+  double x1, x2, y1, y2, X, Y;
+
+  while (cin &gt;&gt; x1 &gt;&gt; y1 &gt;&gt; X &gt;&gt; x2 &gt;&gt; y2 &gt;&gt; Y) {
+    double det = 1.0 / (x1 * y2 - x2 * y1);
+    double ansX = det * (y2 * X - y1 * Y);
+    double ansY = det * (x1 * Y - x2 * X);
+
+    if (ansX == 0) ansX = abs(ansX);
+    if (ansY == 0) ansY = abs(ansY);
+
+    printf(&quot;%.3f %.3f\n&quot;, ansX, ansY);
+  }
+
+  return 0;
+}
+
+</code></pre>
+
+<h1 id="0005:e4e007fb7c0784763ddbe00555507573">0005</h1>
+
+<p><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0005">GCD and LCM</a></p>
+
+<p>GCD(最大公約数) とLCM(最大公約数) を求めるだけ。 lcm の計算順に注意する。<code>a * b</code> を先にやってしまうと、オーバーフローする場合がある(サンプル2)。</p>
+
+<h2 id="コード-1:e4e007fb7c0784763ddbe00555507573">コード</h2>
+
+<pre><code class="language-c++">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main(void) {
+  cin.tie(0);
+  ios::sync_with_stdio(false);
+
+  int a, b;
+  while (cin &gt;&gt; a &gt;&gt; b) {
+    int gcd = __gcd(a, b);
+    int lcm = a / gcd * b;
+
+    cout &lt;&lt; gcd &lt;&lt; &quot; &quot; &lt;&lt; lcm &lt;&lt; endl;
+  }
+
+  return 0;
+}
+
+</code></pre>
+
+<h1 id="0006:e4e007fb7c0784763ddbe00555507573">0006</h1>
+
+<p><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0006">Reverse Sequence</a>
+与えられた文字列を逆順にして出力する。</p>
+
+<h2 id="コード-2:e4e007fb7c0784763ddbe00555507573">コード</h2>
+
+<pre><code class="language-c++">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main(void) {
+  cin.tie(0);
+  ios::sync_with_stdio(false);
+
+  string str;
+  cin &gt;&gt; str;
+  reverse(begin(str), end(str));
+  cout &lt;&lt; str &lt;&lt; endl;
+
+  return 0;
+}
+</code></pre>
+
+<h1 id="0007:e4e007fb7c0784763ddbe00555507573">0007</h1>
+
+<p><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0007">Debt Hell</a></p>
+
+<p>利子を計算するだけだけど、1000円未満を切り上げることに注意。ループ毎に切り上げる。</p>
+
+<h2 id="コード-3:e4e007fb7c0784763ddbe00555507573">コード</h2>
+
+<pre><code class="language-c++">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define rep(i, n) for (int i = 0; i &lt; n; i++)
+
+int main(void) {
+  cin.tie(0);
+  ios::sync_with_stdio(false);
+
+  int n;
+  int money = 100000;
+  cin &gt;&gt; n;
+  rep(i, n) {
+    money *= 1.05;
+    if (money % 1000 == 0) continue;
+    money += 1000 - money % 1000;
+  }
+
+  cout &lt;&lt; money &lt;&lt; endl;
+
+  return 0;
+}
+</code></pre>
+
+<h1 id="0008:e4e007fb7c0784763ddbe00555507573">0008</h1>
+
+<p><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0008">Sum of 4 Integers</a></p>
+
+<p>4重ループ。</p>
+
+<h2 id="コード-4:e4e007fb7c0784763ddbe00555507573">コード</h2>
+
+<pre><code class="language-c++">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define rep(i, n) for (int i = 0; i &lt; n; i++)
+
+int main(void) {
+  cin.tie(0);
+  ios::sync_with_stdio(false);
+
+  int n;
+  while (cin &gt;&gt; n) {
+    int cnt = 0;
+    rep(i, 10) rep(j, 10) rep(k, 10) rep(l, 10) if (i + j + k + l == n) cnt++;
+
+    cout &lt;&lt; cnt &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</code></pre>
+
+<h1 id="0009:e4e007fb7c0784763ddbe00555507573">0009</h1>
+
+<p><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0009">Prime Number</a></p>
+
+<h2 id="コード-5:e4e007fb7c0784763ddbe00555507573">コード</h2>
+
+<p>素数判定。よく, <code>make_prime()</code> を呼び忘れるので気をつけたい。</p>
+
+<pre><code class="language-c++">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define rep(i, n) for (int i = 0; i &lt; n; i++)
+#define N 1000001
+
+int prime[N];
+
+void make_prime() {  // primeが0だったら素数
+  fill(prime, prime + N, 0);
+  prime[0] = prime[1] = 1;
+
+  for (int i = 2; i * i &lt; N; i++) {
+    if (prime[i] == 0) {
+      for (int j = 2 * i; j &lt; N; j += i) {
+        prime[j] = 1;
+      }
+    }
+  }
+}
+
+int main(void) {
+  cin.tie(0);
+  ios::sync_with_stdio(false);
+
+  int n;
+  make_prime();
+  while (cin &gt;&gt; n) {
+    int cnt = 0;
+
+    rep(i, n + 1) {
+      if (prime[i] == 0) cnt++;
+    }
+
+    cout &lt;&lt; cnt &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</code></pre>
+
+    </div>
+
+    <aside>
+        <div class="post-share">
+            <h3>Share</h3>
+            <a id="share-fb" href="http://www.facebook.com/sharer.php?src=bm&u=http%3a%2f%2fupamune.github.io%2fblog%2f2015%2f07%2f05%2faoj_ume0%2f&t=AOJ%200004%20-%200009%20%e3%82%92%e5%9f%8b%e3%82%81%e3%81%9f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><img src="http://upamune.github.io/images/sharebutton/facebook.png" alt="Facebook"/></a>
+            <a id="share-twitter" href="http://twitter.com/intent/tweet?url=http%3a%2f%2fupamune.github.io%2fblog%2f2015%2f07%2f05%2faoj_ume0%2f&text=AOJ%200004%20-%200009%20%e3%82%92%e5%9f%8b%e3%82%81%e3%81%9f&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><img src="http://upamune.github.io/images/sharebutton/twitter.png" alt="Twitter"/></a>
+            <a id="share-googleplus" href="https://plus.google.com/share?url=http%3a%2f%2fupamune.github.io%2fblog%2f2015%2f07%2f05%2faoj_ume0%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><img src="http://upamune.github.io/images/sharebutton/googleplus.png" alt="Google+"/></a>
+            <a id="share-hatena" href="http://b.hatena.ne.jp/add?mode=confirm&url=http%3a%2f%2fupamune.github.io%2fblog%2f2015%2f07%2f05%2faoj_ume0%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><img src="http://upamune.github.io/images/sharebutton/hatena.png" alt="Hatena"/></a>
+            <a id="share-pocket" href="http://getpocket.com/edit?url=http%3a%2f%2fupamune.github.io%2fblog%2f2015%2f07%2f05%2faoj_ume0%2f&title=AOJ%200004%20-%200009%20%e3%82%92%e5%9f%8b%e3%82%81%e3%81%9f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><img src="http://upamune.github.io/images/sharebutton/pocket.png" alt="Pocket"/></a>
+        </div>
+
+        
+    </aside>
+
+    
+    <footer>
+        <div class="move">
+            <div class="prev">
+                
+                <a href="http://upamune.github.io/blog/2015/07/05/go_with_intellij/">
+                    <i class="fa fa-chevron-left"></i>
+                    IntelliJでGoを書く
+                </a>
+                
+            </div>
+            <div class="next">
+                
+                <a href="http://upamune.github.io/blog/2015/07/04/aoj_1127/">
+                    AOJ_1127 Building a Space Station
+                    <i class="fa fa-chevron-right"></i>
+                </a>
+                
+            </div>
+        </div>
+
+        
+        
+        
+    </footer>
+
+</article>
+
+
+    </div>
+</div>
+
+
+<aside class="sidebar-wrapper">
+    <div class="container">
+        
+        <div class="tags tag-cloud">
+            <h2>Tags</h2>
+            <ul class="post-tags">
+                
+                
+            </ul>
+        </div>
+        
+        
+        <div id="profile">
+            <div class="eyecatch">
+                <img id="photo" src="/images/nopicture.png" alt="profile">
+            </div>
+            <div class="data">
+                
+                <span class="post-date">Thu, Nov 30, 1995</span>
+                
+                <h1 id="username" class="post-title"></h1>
+                
+                <a href="https://www.facebook.com/upamune" target="_blank"><i class="fa fa-facebook-square"></i></a>
+                
+                
+                <a href="https://twitter.com/upamune" target="_blank"><i class="fa fa-twitter-square"></i></a>
+                
+                
+                <a href="https://github.com/upamune" target="_blank"><i class="fa fa-github-square"></i></a>
+                
+                <pre id="description"></pre>
+                <ul id="urls" class="post-tags"></ul>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+<footer class="copy">
+    <p>&copy; 2015  Masato Yamamoto </p>
+    <p>Powered by <a href="http://gohugo.io" target="_blank">Hugo</a>, Theme <a href="https://github.com/dim0627/hugo_theme_aglaus" target="_blank">Aglaus</a> designed by <a href="http://yet.unresolved.xyz" target="_blank">Daisuke Tsuji</a></p>
+</footer>
+
+<script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script src="http://upamune.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-64589900-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+<script>
+$(function() {
+    var url = "https://ja.gravatar.com/b14e6e1f73993092840201a50679abd3.json?callback=?";
+    $.getJSON(url)
+        .done(function(data) {
+            var entry = data.entry[0];
+            $("#photo").attr("src", entry.photos[0].value);
+            $("#username").html(entry.name.familyName + " " + entry.name.givenName);
+            $("#description").html(entry.aboutMe);
+            entry.urls.forEach(function(el){
+                $("#urls").append($("<li><a href='" + el.value + "'>" + el.title + "</a></li>"));
+            });
+            $("#profile").show();
+        });
+});
+</script>
+

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="ArchLinux をインストールする with Btrfs | 人権を得たいゴミ">
+<meta property="og:url" content="http://upamune.github.io/blog/2015/07/10/archlinux_install_btrfs/">
+<meta property="og:description" content="インストール以前 Arch Linux Downloadsから最新版のISOをダウンロードしてくる。そしてUSBメモリをさして焼けばいいのだけれど、自分は毎回以下のようにやっている。 $ lsblk #USBメモリを確認 $ dd bs=4M if=archlinux.iso of=/dev/sdX #lsblkで確認したデバイスに焼く 毎回のように dd の進捗を確認する方法を検索してしまうのでメモ。 $ sudo sh -c &#39;while true; do killall -USR1 dd; sleep 2; done&#39; こうすると2秒おきに進捗が見れるらしい。べんり。 CentOS ddコマンド実行中に進捗情報を確認する方法 BSD系だと使えないので注意。 ArchLinuxのインストール ネットワークに接続する ネットワークに接続しないとなにも始まらないので接続。有線でも無線でも良い。 無線の場合は # wifi-menu で接続。 # ping 8.8.8.8 接続確認。 ssh 接続する そのまま設定を手打ちするのは面倒くさいので, sshで接続して設定をする。 ホスト側 # sytemctl start sshd # systmctl status sshd # ip a IPアドレスを確認しておく。 # passwd そして、rootパスワードを設定しておきます。 クライアント側 $ ssh root@IP_ADDR ssh接続確認できたら、次に進む。 パーティション">
+
+<meta property="og:image" content="http://upamune.github.io/images/archlinux.png">
+
+
+<meta property="og:site_name" content="人権を得たいゴミ">
+<meta name="twitter:card" content="summary">
+
+<title>
+    
+    ArchLinux をインストールする with Btrfs | 人権を得たいゴミ
+    
+</title>
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Serif:400,400italic,700|PT+Sans:400">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/solarized_dark.min.css">
+<link rel="stylesheet" href="http://upamune.github.io/css/base.css">
+<link rel="stylesheet" href="http://upamune.github.io/css/styles.css">
+<link rel="stylesheet" href="http://upamune.github.io/css/custom.css">
+
+
+<link rel="shortcut icon" href="http://upamune.github.io/assets/favicon.ico">
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://upamune.github.io/index.xml">
+
+
+
+<div class="wrap">
+    <div class="masthead">
+        <div class="container">
+            <h3 class="masthead-title">
+                <a href="http://upamune.github.io" title="Home">人権を得たいゴミ</a>
+            </h3>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </div>
+    </div>
+
+    <div class="container content">
+
+
+<article class="post post-single">
+    <span class="post-date">Fri, Jul 10, 2015</span>
+    <h1 class="post-title">ArchLinux をインストールする with Btrfs</h1>
+
+    <div class="eyecatch">
+        
+        <img src="http://upamune.github.io/images/archlinux.png" alt="ArchLinux をインストールする with Btrfs">
+        
+    </div>
+    
+
+    <div class="post-content">
+        
+
+<h1 id="インストール以前:7ecbc99fb37e3d3ed4682d3347f70c22">インストール以前</h1>
+
+<p><a href="https://www.archlinux.org/download/">Arch Linux Downloads</a>から最新版のISOをダウンロードしてくる。そしてUSBメモリをさして焼けばいいのだけれど、自分は毎回以下のようにやっている。</p>
+
+<pre><code class="language-bash">$ lsblk #USBメモリを確認
+$ dd bs=4M if=archlinux.iso of=/dev/sdX #lsblkで確認したデバイスに焼く
+</code></pre>
+
+<p>毎回のように <code>dd</code> の進捗を確認する方法を検索してしまうのでメモ。</p>
+
+<pre><code class="language-bash">$ sudo sh -c 'while true; do killall -USR1 dd; sleep 2; done'
+</code></pre>
+
+<p>こうすると2秒おきに進捗が見れるらしい。べんり。
+<a href="http://kaworu.jpn.org/kaworu/2012-11-29-1.php">CentOS ddコマンド実行中に進捗情報を確認する方法</a></p>
+
+<p>BSD系だと使えないので注意。</p>
+
+<h1 id="archlinuxのインストール:7ecbc99fb37e3d3ed4682d3347f70c22">ArchLinuxのインストール</h1>
+
+<h2 id="ネットワークに接続する:7ecbc99fb37e3d3ed4682d3347f70c22">ネットワークに接続する</h2>
+
+<p>ネットワークに接続しないとなにも始まらないので接続。有線でも無線でも良い。
+無線の場合は</p>
+
+<pre><code class="language-bash"># wifi-menu
+</code></pre>
+
+<p>で接続。</p>
+
+<pre><code class="language-bash"># ping 8.8.8.8
+</code></pre>
+
+<p>接続確認。</p>
+
+<h2 id="ssh-接続する:7ecbc99fb37e3d3ed4682d3347f70c22">ssh 接続する</h2>
+
+<p>そのまま設定を手打ちするのは面倒くさいので, sshで接続して設定をする。</p>
+
+<h3 id="ホスト側:7ecbc99fb37e3d3ed4682d3347f70c22">ホスト側</h3>
+
+<pre><code class="language-bash"># sytemctl start sshd
+# systmctl status sshd
+# ip a
+</code></pre>
+
+<p>IPアドレスを確認しておく。</p>
+
+<pre><code class="language-bash"># passwd
+</code></pre>
+
+<p>そして、rootパスワードを設定しておきます。</p>
+
+<h3 id="クライアント側:7ecbc99fb37e3d3ed4682d3347f70c22">クライアント側</h3>
+
+<pre><code class="language-bash">$ ssh root@IP_ADDR
+</code></pre>
+
+<p>ssh接続確認できたら、次に進む。</p>
+
+<h2 id="パーティション:7ecbc99fb37e3d3ed4682d3347f70c22">パーティション</h2>
+
+<p>一番面倒くさい。</p>
+
+<pre><code class="language-bash"># cgdisk /dev/sda
+</code></pre>
+
+<p>こんなかんじにした。</p>
+
+<pre><code class="language-bash">NAME             MAJ:MIN  RM  SIZE    RO  TYPE
+ sda
+ │─sda1            8:1     0    512M   0   part
+ ├─sda2            8:2     0      1G   0   part
+ └─sda3            8:3     0  117.8G   0   part
+</code></pre>
+
+<h3 id="フォーマット:7ecbc99fb37e3d3ed4682d3347f70c22">フォーマット</h3>
+
+<pre><code class="language-bash"># mkfs.vfat -F32 /dev/sda1
+# mkswap /dev/sda2
+# mkfs.btrfs /dev/sda3
+</code></pre>
+
+<h3 id="マウント:7ecbc99fb37e3d3ed4682d3347f70c22">マウント</h3>
+
+<pre><code class="language-bash"># mount -o noatime,discard,ssd,autodefrag,compress=lzo,space_cache /dev/sda3 /mnt
+# mkdir -p /mnt/boot/efi
+# mount /dev/sda1 /mnt/boot/efi
+</code></pre>
+
+<h2 id="pacstrap:7ecbc99fb37e3d3ed4682d3347f70c22">pacstrap</h2>
+
+<p>パーティションが終わったらあとは楽ちん。 <code>pacstrap</code> を使って必要なソフト群をインストールする。その前にミラーリストの順序を変更しておくと良い。</p>
+
+<pre><code class="language-bash"># vi /etc/pacman.d/mirrorlist # Japanを上に持ってくる
+# pacstrap /mnt base base-devel grub efibootmgr dosfstools btrfs-progs lzo dialog wpa_supplicant openssh git vim zsh
+</code></pre>
+
+<p>そこそこ時間がかかるので待つ。</p>
+
+<h2 id="設定:7ecbc99fb37e3d3ed4682d3347f70c22">設定</h2>
+
+<h3 id="fstab:7ecbc99fb37e3d3ed4682d3347f70c22">fstab</h3>
+
+<pre><code class="language-bash"># genfstab -p /mnt &gt;&gt; /mnt/etc/fstab
+# vim /mnt/etc/fstab #/dev/sda の形式ではなくて,UUID=の形式に置き換える
+</code></pre>
+
+<h3 id="諸設定:7ecbc99fb37e3d3ed4682d3347f70c22">諸設定</h3>
+
+<pre><code class="language-bash"># arch-chroot /mnt `which zsh`
+# passwd
+# echo HOSTNAME &gt; /etc/hostname
+# ln -s /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+# echo 'LANG=en_US.UTF-8' &gt; /etc/locale.conf
+# vim /etc/locale.gen # en_US.UTF-8 のコメントアウトを解除する
+# locale-gen
+# vim /etc/mkinitcpio.conf # HOOKSのfsck のあとにbtrfsを追加する
+# mkinitcpio -p linux
+# mkdir /boot/efi/EFI
+# grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Grub --recheck --debug
+# grub-mkconfig -o /boot/grub/grub.cfg
+# exit
+# umount /mnt/{boot/efi,}
+# reboot
+</code></pre>
+
+<p>ここまででArchLinuxのインストールは完了です。次は基本的な設定をしていきます</p>
+
+<p>また先ほどの要領でssh接続して進める。</p>
+
+<h2 id="pacman-yaourt:7ecbc99fb37e3d3ed4682d3347f70c22">pacman &amp; yaourt</h2>
+
+<p><code>/etc/pacman.conf</code> を設定してmultilibを有効にしておく。</p>
+
+<p>そしてこれも末尾に追記しておく。</p>
+
+<pre><code class="language-bash">[archlinuxfr]
+SigLevel = Never
+Server = http://repo.archlinux.fr/$arch
+</code></pre>
+
+<p>追記し終わったら、更新して <code>yaourt</code> を有効にしておく。</p>
+
+<pre><code class="language-bash"># pacman --sync --refresh yaourt
+</code></pre>
+
+<h2 id="ユーザー作成:7ecbc99fb37e3d3ed4682d3347f70c22">ユーザー作成</h2>
+
+<pre><code class="language-bash"># useradd -m -G wheel -s /bin/zsh upamune
+# passwd upamune
+# visudo # %wheel ALL=(ALL) ALL のコメントアウトを解除する
+</code></pre>
+
+<p>ユーザー作成したのでこれからはrootユーザーではなく作成したユーザーで作業していく。</p>
+
+<h1 id="gui構築:7ecbc99fb37e3d3ed4682d3347f70c22">GUI構築</h1>
+
+<p>Xfce + SLiM です。</p>
+
+<h2 id="slim-導入:7ecbc99fb37e3d3ed4682d3347f70c22">SLiM 導入</h2>
+
+<pre><code class="language-bash">$ yaourt -Sy xorg-server xorg-server-utils xorg-server-xephyr xorg-utils xterm xf86-video-intel slim archlinux-themes-slim slim-themes
+$ vim /etc/slim.conf # login_cmd, daemon の行のコメントアウトを解除して、 themeも変更
+$ systemctl enable slim.service
+</code></pre>
+
+<h2 id="xfce-導入:7ecbc99fb37e3d3ed4682d3347f70c22">Xfce 導入</h2>
+
+<pre><code class="language-bash">$ yaourt -S xfce4 xfce4-goodies gamin
+$ vim ~/.xinitrc # exec startxfce4 と書けば良い
+</code></pre>
+
+<h2 id="インストール後:7ecbc99fb37e3d3ed4682d3347f70c22">インストール後</h2>
+
+<h3 id="プログラミング言語系:7ecbc99fb37e3d3ed4682d3347f70c22">プログラミング言語系</h3>
+
+<pre><code class="language-bash">$ yaourt -S clang go scala
+</code></pre>
+
+<h3 id="ツール:7ecbc99fb37e3d3ed4682d3347f70c22">ツール</h3>
+
+<pre><code class="language-bash">$ yaourt -S chromium dropbox gimp guake mikutter mercurial tig xsel tlp tp-smapi tpacpi-bat tmux the_silver_searcher unzip wpa_actiond
+</code></pre>
+
+<p><code>wpa_actiond</code> をインストールすることで <code>netctl-auto</code> が入るので、ネットワークに自動接続するように設定する。</p>
+
+<pre><code class="language-bash">$ systemctl enable netctl-auto@[INTERFACE].service
+</code></pre>
+
+<p>さらに <code>tlp</code> を有効にするためにも設定しておく。</p>
+
+<pre><code class="language-bash">systemctl enable tlp.service
+</code></pre>
+
+<h3 id="開発環境:7ecbc99fb37e3d3ed4682d3347f70c22">開発環境</h3>
+
+<pre><code class="language-bash">$ yaourt -S ctags typesafe-activator intellij-idea-ultimate-edition
+</code></pre>
+
+<h3 id="フォント:7ecbc99fb37e3d3ed4682d3347f70c22">フォント</h3>
+
+<pre><code class="language-bash">$ yaourt -S ttf-koruri ttf-ricty otf-ipaexfont ttf-symbola
+</code></pre>
+
+<h3 id="日本語入力:7ecbc99fb37e3d3ed4682d3347f70c22">日本語入力</h3>
+
+<pre><code class="language-bash">$ yaourt -S fcitx-qt5 fcitx-im fcitx-configtool fcitx-mozc
+</code></pre>
+
+<p>インストール後にFcitx Configuration からMozcを追加する必要がある。</p>
+
+<h3 id="テーマ:7ecbc99fb37e3d3ed4682d3347f70c22">テーマ</h3>
+
+<pre><code class="language-bash">$ yaourt numix-themes-git numix-icon-theme-git
+</code></pre>
+
+    </div>
+
+    <aside>
+        <div class="post-share">
+            <h3>Share</h3>
+            <a id="share-fb" href="http://www.facebook.com/sharer.php?src=bm&u=http%3a%2f%2fupamune.github.io%2fblog%2f2015%2f07%2f10%2farchlinux_install_btrfs%2f&t=ArchLinux%20%e3%82%92%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab%e3%81%99%e3%82%8b%20with%20Btrfs" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><img src="http://upamune.github.io/images/sharebutton/facebook.png" alt="Facebook"/></a>
+            <a id="share-twitter" href="http://twitter.com/intent/tweet?url=http%3a%2f%2fupamune.github.io%2fblog%2f2015%2f07%2f10%2farchlinux_install_btrfs%2f&text=ArchLinux%20%e3%82%92%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab%e3%81%99%e3%82%8b%20with%20Btrfs&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><img src="http://upamune.github.io/images/sharebutton/twitter.png" alt="Twitter"/></a>
+            <a id="share-googleplus" href="https://plus.google.com/share?url=http%3a%2f%2fupamune.github.io%2fblog%2f2015%2f07%2f10%2farchlinux_install_btrfs%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><img src="http://upamune.github.io/images/sharebutton/googleplus.png" alt="Google+"/></a>
+            <a id="share-hatena" href="http://b.hatena.ne.jp/add?mode=confirm&url=http%3a%2f%2fupamune.github.io%2fblog%2f2015%2f07%2f10%2farchlinux_install_btrfs%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><img src="http://upamune.github.io/images/sharebutton/hatena.png" alt="Hatena"/></a>
+            <a id="share-pocket" href="http://getpocket.com/edit?url=http%3a%2f%2fupamune.github.io%2fblog%2f2015%2f07%2f10%2farchlinux_install_btrfs%2f&title=ArchLinux%20%e3%82%92%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab%e3%81%99%e3%82%8b%20with%20Btrfs" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><img src="http://upamune.github.io/images/sharebutton/pocket.png" alt="Pocket"/></a>
+        </div>
+
+        
+    </aside>
+
+    
+    <footer>
+        <div class="move">
+            <div class="prev">
+                
+                <a href="http://upamune.github.io/blog/2015/07/11/vim-neobundle-toml/">
+                    <i class="fa fa-chevron-left"></i>
+                    NeoBundleのプラグインをTOMLで管理する
+                </a>
+                
+            </div>
+            <div class="next">
+                
+                <a href="http://upamune.github.io/blog/2015/07/05/go_with_intellij/">
+                    IntelliJでGoを書く
+                    <i class="fa fa-chevron-right"></i>
+                </a>
+                
+            </div>
+        </div>
+
+        
+        
+        
+    </footer>
+
+</article>
+
+
+    </div>
+</div>
+
+
+<aside class="sidebar-wrapper">
+    <div class="container">
+        
+        <div class="tags tag-cloud">
+            <h2>Tags</h2>
+            <ul class="post-tags">
+                
+                
+            </ul>
+        </div>
+        
+        
+        <div id="profile">
+            <div class="eyecatch">
+                <img id="photo" src="/images/nopicture.png" alt="profile">
+            </div>
+            <div class="data">
+                
+                <span class="post-date">Thu, Nov 30, 1995</span>
+                
+                <h1 id="username" class="post-title"></h1>
+                
+                <a href="https://www.facebook.com/upamune" target="_blank"><i class="fa fa-facebook-square"></i></a>
+                
+                
+                <a href="https://twitter.com/upamune" target="_blank"><i class="fa fa-twitter-square"></i></a>
+                
+                
+                <a href="https://github.com/upamune" target="_blank"><i class="fa fa-github-square"></i></a>
+                
+                <pre id="description"></pre>
+                <ul id="urls" class="post-tags"></ul>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+<footer class="copy">
+    <p>&copy; 2015  Masato Yamamoto </p>
+    <p>Powered by <a href="http://gohugo.io" target="_blank">Hugo</a>, Theme <a href="https://github.com/dim0627/hugo_theme_aglaus" target="_blank">Aglaus</a> designed by <a href="http://yet.unresolved.xyz" target="_blank">Daisuke Tsuji</a></p>
+</footer>
+
+<script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script src="http://upamune.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-64589900-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+<script>
+$(function() {
+    var url = "https://ja.gravatar.com/b14e6e1f73993092840201a50679abd3.json?callback=?";
+    $.getJSON(url)
+        .done(function(data) {
+            var entry = data.entry[0];
+            $("#photo").attr("src", entry.photos[0].value);
+            $("#username").html(entry.name.familyName + " " + entry.name.givenName);
+            $("#description").html(entry.aboutMe);
+            entry.urls.forEach(function(el){
+                $("#urls").append($("<li><a href='" + el.value + "'>" + el.title + "</a></li>"));
+            });
+            $("#profile").show();
+        });
+});
+</script>
+
