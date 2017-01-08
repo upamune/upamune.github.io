@@ -1,61 +1,81 @@
-<!DOCTYPE HTML>
-<!--
-	Identity by HTML5 UP
-	html5up.net | @n33co
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Who am I</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script src="assets/js/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
-		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	</head>
-	<body class="is-loading">
-
-		<!-- Wrapper -->
-			<div id="wrapper">
-
-				<!-- Main -->
-					<section id="main">
-						<header>
-							<span class="avatar"><img src="images/icon.png" alt="" /></span>
-							<h1>upamune</h1>
-							<p>Golang&nbsp;&bull;&nbsp;NeoVim&nbsp;&bull;&nbsp;PriPara</p>
-						</header>
-						<footer>
-							<ul class="icons">
-								<li><a href="https://twitter.com/upamune" class="fa-twitter-square">Twitter</a></li>
-								<li><a href="https://github.com/upamune" class="fa-github-square">GitHub</a></li>
-								<li><a href="https://instagram.com/upamune" class="fa-instagram">Instagram</a></li>
-								<li><a href="http://blog.upamune.com/" class="fa-pencil">Blog</a></li>
-								<li><a href="http://amzn.asia/4EErMQW" class="fa-amazon">WishList</a></li>
-							</ul>
-						</footer>
-					</section>
-
-				<!-- Footer -->
-					<footer id="footer">
-						<ul class="copyright">
-							<li>&copy; upamune</li>
-							<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-						</ul>
-					</footer>
-
-			</div>
-
-		<!-- Scripts -->
-			<!--[if lte IE 8]><script src="assets/js/respond.min.js"></script><![endif]-->
-			<script>
-				if ('addEventListener' in window) {
-					window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-loading\b/, ''); });
-					document.body.className += (navigator.userAgent.match(/(MSIE|rv:11\.0)/) ? ' is-ie' : '');
-				}
-			</script>
-
-	</body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta property="og:type" content="profile" />
+  <meta property="og:url" content="https://www.upamune.com" />
+  <meta property="og:title" content="upamune.com" />
+  <meta property="og:image" content="http://www.gravatar.com/avatar/2709e9b504d8fbaf78ad53866a926e68?s=150" />
+  <meta property="og:description" content="upamune.com" />
+  <meta property="og:site_name" content="upamune.com" />
+	<meta name="twitter:card" content="upamune.com" />
+	<meta name="twitter:site" content="@upamune" />
+	<meta name="twitter:title" content="upamune.com" />
+	<meta name="twitter:description" content="upamune.com" />
+	<meta name="twitter:image" content="http://www.gravatar.com/avatar/2709e9b504d8fbaf78ad53866a926e68?s=150" />
+	<link rel="stylesheet" href="https://unpkg.com/awsm.css/dist/awsm.min.css">
+	<title>upamune.com</title>
+</head>
+<body>
+	<header>
+		<h1>upamune.com</h1>
+	</header>
+<main>
+	<article>
+		<section>
+			<img src="http://www.gravatar.com/avatar/2709e9b504d8fbaf78ad53866a926e68?s=150" alt="mosaic icon">
+		</section>
+		<section>
+			<h2>Name</h2>
+			<p>Yu SERIZAWA</p>
+		</section>
+		<section>
+			<h2>Like</h2>
+			<ul>
+				<li>Golang</li>
+				<li>Crystal</li>
+				<li>DevOps</li>
+				<li>PriPara</li>
+				<li>i☆Ris</li>
+			</ul>
+		</section>
+		<section>
+			<h2>Twitter</h2>
+			<p><a href="https://twitter.com/upamune">@upamune</a></p>
+		</section>
+		<section>
+			<h2>GitHub</h2>
+			<p><a href="https://github.com/upamune">@upamune</a></p>
+		</section>
+		<section>
+			<h2>Keybase</h2>
+			<p><a href="https://keybase.io/upamune">@upamune</a></p>
+		</section>
+		<section>
+			<h2>Instagram</h2>
+			<p><a href="https://instagram/upamune">@upamune</a></p>
+		</section>
+		<section>
+			<h2>Blog</h2>
+			<p><a href="blog.upamune.com">blog.upamune.com</a></p>
+		</section>
+		<section>
+			<h2>Diary</h2>
+			<p><a href="diary.upamune.com">diary.upamune.com</a></p>
+		</section>
+		<section>
+			<h2>WishList</h2>
+			<p><a href="http://amzn.asia/4EErMQW">amzn.asia/4EErMQW</a></p>
+		</section>
+	</article>
+</main>
+<footer>&copy;upamune <span id="year"></span></footer>
+<script>
+	document.addEventListener("DOMContentLoaded", function() {
+		document.getElementById("year").textContent = new Date().getFullYear();
+	});
+</script>
+</body>
 </html>
